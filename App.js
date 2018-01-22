@@ -1,60 +1,28 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { Navigation } from 'react-native-navigation';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { registerScreens } from './screens';
 
-import {RkButton} from 'react-native-ui-kitten';
+registerScreens(); // this is where you register all of your app's screens
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-export default class App extends Component<{}> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native! nnnnnn
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <RkButton>Click me!</RkButton>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+// start the app
+Navigation.startTabBasedApp({
+  appStyle: {
+      forceTitlesDisplay: true
+    },
+  tabs: [
+    {
+      label: 'Catalogo',
+      screen: 'example.CarListContainer', // this is a registered name for a screen
+      icon: require('./screens/catalog.png'),
+      selectedIcon: require('./screens/catalog.png'), // iOS only
+      title: 'Catalogo'
+    },
+    {
+      label: 'Cotizador',
+      screen: 'example.Calculator',
+      icon: require('./screens/calculator.png'),
+      selectedIcon: require('./screens/calculator.png'), // iOS only
+      title: 'Locales'
+    }
+  ]
 });
