@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.2.0",
     "react-native": "0.52.0",
+    "react-native-meteor": "^1.2.0",
     "react-native-ui-kitten": "^3.0.0"
   },
   "devDependencies": {
