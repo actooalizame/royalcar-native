@@ -14,7 +14,9 @@ class CarListComponent extends Component {
       props.navigator.push({
         screen: 'example.CarDetails',
         title: car.name,
-        passProps: {car}
+        passProps: {car},
+        //screenBackgroundColor: '#fff',
+        animationType: 'slide-horizontal'
       });
     }
   }
@@ -27,7 +29,7 @@ class CarListComponent extends Component {
           <View rkCardHeader>
             <Text>{car.name}</Text>
           </View>
-          <Image rkCardImg source={{uri: 'http://merchandiser-szcel9eb49h.stackpathdns.com/wp-content/uploads/2016/09/hv1-ch.jpg'}}/>
+          <Image rkCardImg source={{uri: car.images.single}}/>
           <View rkCardContent>
             <Text> quick brown fox jumps over the lazy dog</Text>
           </View>
@@ -71,7 +73,8 @@ export default CarListComponent;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    //backgroundColor: '#fff'
   },
   buttonContainer: {
     paddingHorizontal: 16,
