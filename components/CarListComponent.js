@@ -19,6 +19,15 @@ class CarListComponent extends Component {
         animationType: 'slide-horizontal'
       });
     }
+    calculateCar = (car) => {
+      props.navigator.push({
+        screen: 'example.CarCalculator',
+        title: car.name,
+        passProps: {car},
+        //screenBackgroundColor: '#fff',
+        animationType: 'slide-horizontal'
+      });
+    }
   }
 
 	renderRow(car) {
@@ -31,10 +40,11 @@ class CarListComponent extends Component {
           </View>
           <Image rkCardImg source={{uri: car.images.single}}/>
           <View rkCardContent>
-            <Text> quick brown fox jumps over the lazy dog</Text>
+            <Text>{car.brand} - {car.model} - {car.year}</Text>
           </View>
           <View rkCardFooter>
-            <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>ver</RkButton>
+            <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>Ver</RkButton>
+            <RkButton rkType='small success'  onPress={() => this.calculateCar(car)}>Cotizar</RkButton>
           </View>
         </RkCard>
         
