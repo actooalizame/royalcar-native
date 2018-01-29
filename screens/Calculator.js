@@ -22,7 +22,15 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+    viewDetails = () => {
+      console.log(this.props.navigator)
+      this.props.navigator.push({
+        screen: 'example.CarDetails',
+        title: 'hola'
+      });
+    }
   render() {
+    console.log(this.props.navigator)
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -34,7 +42,7 @@ export default class App extends Component<{}> {
         <Text style={styles.instructions}>
           {instructions}
         </Text>
-        <RkButton>Click me!</RkButton>
+        <RkButton onPress={this.viewDetails}>Click me!</RkButton>
       </View>
     );
   }
