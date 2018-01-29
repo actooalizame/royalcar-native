@@ -11,7 +11,7 @@ class CarDetails extends Component {
     return (
       <View style={styles.container}>
         
-        <Text>Hola</Text>
+        <Text>{this.props.car.name}</Text>
       </View>
     );
   }

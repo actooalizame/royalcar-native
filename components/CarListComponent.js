@@ -2,26 +2,24 @@ import React, { Component } from 'react';
 //import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView, StyleSheet,View,Text,Image} from 'react-native';
 import {RkCard,rkCardHeader,rkCardContent,rkCardImg,RkButton} from 'react-native-ui-kitten';
-import Meteor, { connectMeteor, MeteorListView } from 'react-native-meteor';
+import Meteor, { MeteorListView } from 'react-native-meteor';
 
 class CarListComponent extends Component {
   /*static navigationOptions = {
     title: 'Autos',
   };*/
 
-  componentWillReceiveProps(props) {
-    //console.log(navigatory); // i get the right data!
-    //console.log(this.props); // empty array >_<
-    viewDetails = () => {
+ componentWillReceiveProps(props) {
+    viewDetails = (car) => {
       props.navigator.push({
         screen: 'example.CarDetails',
-        title: 'hola'
+        title: car.name,
+        passProps: {car}
       });
     }
   }
 
-	renderRow(car,props) {
-    //console.log(props);
+	renderRow(car) {
     
     return (
       <ScrollView style={styles.container}>
@@ -34,7 +32,7 @@ class CarListComponent extends Component {
             <Text> quick brown fox jumps over the lazy dog</Text>
           </View>
           <View rkCardFooter>
-            <RkButton rkType='small' onPress={this.viewDetails}>ver</RkButton>
+            <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>ver</RkButton>
           </View>
         </RkCard>
         
@@ -44,7 +42,7 @@ class CarListComponent extends Component {
   }
 
   render() {
-    const { carsReady, navigatory } = this.props;
+    const { carsReady } = this.props;
     if (!carsReady) {
       return (
         <View>
@@ -62,7 +60,6 @@ class CarListComponent extends Component {
           /*selector={{status:'iddlee'}}*/
           options={{sort: {createdAt: -1}}}
           renderRow={this.renderRow}
-          {...navigatory}
         />
       </View>
     );
