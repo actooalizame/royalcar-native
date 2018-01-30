@@ -20,7 +20,7 @@ export default class CarCalculator extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {showPercent: 0};
-    this.state = {showPayment: "Elige cantidad de cuotas"};
+    this.state = {showPayment: null};
     this.handlePercent = this.handlePercent.bind(this);
     this.handlePayment = this.handlePayment.bind(this);
   }
