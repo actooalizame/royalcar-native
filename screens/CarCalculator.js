@@ -53,7 +53,7 @@ export default class CarCalculator extends Component<{}> {
     return (
       <View style={styles.container}>
         <Text>Valor del pie: {this.setUpfrontPrice()}</Text>
-        <RkChoiceGroup selectedIndex={1} radio onChange={(index) => this.setState({selectedPercent:index})}>
+        <RkChoiceGroup selectedIndex={1} radio onChange={(index) => this.handlePercent(index)}>
           <TouchableOpacity choiceTrigger>
             <View style={{flexDirection:'row', alignItems:'center'}}>
               <RkChoice rkType='radio'/>
