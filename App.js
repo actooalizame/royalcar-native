@@ -1,7 +1,7 @@
 import { Navigation } from 'react-native-navigation';
 import Meteor, { connectMeteor } from 'react-native-meteor';
 import { registerScreens } from './screens';
-Meteor.connect('ws://192.168.1.88:3000/websocket');
+Meteor.connect('ws://192.168.1.83:3000/websocket');
 
 registerScreens(); // this is where you register all of your app's screens
 

@@ -21,6 +21,7 @@ export default class CarCalculator extends Component<{}> {
     super(props);
     this.state = {selectedPercent: 1};
   }
+
   setUpfrontPrice = () => {
     const selectedPercent = this.state.selectedPercent,
           price = this.props.car.price;
@@ -43,8 +44,10 @@ export default class CarCalculator extends Component<{}> {
         break;
     default:
         // execute default code block
+    }
   }
-
+  handlePercent(index){
+    this.setState({selectedPercent:index})
   }
   render() {
     return (
