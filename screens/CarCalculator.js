@@ -19,66 +19,82 @@ import {RkButton,RkChoiceGroup,RkChoice,rkType} from 'react-native-ui-kitten';
 export default class CarCalculator extends Component<{}> {
   constructor(props) {
     super(props);
-    this.state = {showPercent: 0};
+    this.state = {showPercent: 1};
     this.state = {showPayment: null};
+    this.state = {selectedIndex: null};
+    this.state = {selectedIndexPay: null};
     this.handlePercent = this.handlePercent.bind(this);
     this.handlePayment = this.handlePayment.bind(this);
+    this.calculatePlan = this.calculatePlan.bind(this);
   }
 
   handlePercent=function(index,props){
     this.state.selectedPercent=index;
-    const price = this.props.car.price;
-    if(this.state.selectedPercent===0){
-      let calculated = parseInt (price*0.25);
-      let formated = calculated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      let result = ("$ " + formated);
-      this.setState({showPercent:result,selectedIndex:this.state.selectedPercent})
+    const price = parseInt(this.props.car.price);
+
+    if(index===0){
+      let calculatedPercent = parseInt (price*0.25),
+          remainingPrice = price - calculatedPercent,
+          formated = calculatedPercent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          result = ("$ " + formated);
+      this.setState({showPercent:result,selectedIndex:index,remainingPrice:remainingPrice});
     }
-    if(this.state.selectedPercent===1){
-      let calculated = parseInt (price*0.5);
-      let formated = calculated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      let result = ("$ " + formated);
-      this.setState({showPercent:result,selectedIndex:this.state.selectedPercent})
+    if(index===1){
+      let calculatedPercent = parseInt (price*0.5),
+          remainingPrice = price - calculatedPercent,
+          formated = calculatedPercent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          result = ("$ " + formated);
+      this.setState({showPercent:result,selectedIndex:index,remainingPrice:remainingPrice});
     }
-    if(this.state.selectedPercent===2){
-      let calculated = parseInt (price*0.7);
-      let formated = calculated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      let result = ("$ " + formated);
-      this.setState({showPercent:result,selectedIndex:this.state.selectedPercent})
-    }
-  };
-  handlePayment=function(index1,props){
-    this.state.selectedPayment=index1;
-    const price = this.props.car.price;
-    if(this.state.selectedPayment===0){
-      
-      this.setState({showPayment:"3",selectedIndexPay:this.state.selectedPayment})
-    }
-    if(this.state.selectedPayment===1){
-      
-      this.setState({showPayment:"6",selectedIndexPay:this.state.selectedPayment})
-    }
-    if(this.state.selectedPayment===2){
-      
-      this.setState({showPayment:"12",selectedIndexPay:this.state.selectedPayment})
+    if(index===2){
+      let calculatedPercent = parseInt (price*0.7),
+          remainingPrice = price - calculatedPercent,
+          formated = calculatedPercent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          result = ("$ " + formated);
+      this.setState({showPercent:result,selectedIndex:index,remainingPrice:remainingPrice});
     }
   };
-  /*handlePayment(index){
-    this.setState({selectedPayment:index})
-  }*/
+  handlePayment=function(index,props){
+    this.state.selectedPayment=index;
+    const price = parseInt(this.props.car.price);
+    let {remainingPrice} = this.state;
+
+    if(index===0){
+      const interestRate = price * 0.075;
+      this.setState({showPayment:3,selectedIndexPay:index,interestRate:interestRate});
+    }
+    if(index===1){
+      const interestRate = price * 0.15;
+      this.setState({showPayment:6,selectedIndexPay:index,interestRate:interestRate})
+    }
+    if(index===2){
+      const interestRate = price * 0.3;
+      this.setState({showPayment:12,selectedIndexPay:index,interestRate:interestRate})
+    }
+  };
+
+  calculatePlan=function(){
+    const price = parseInt(this.props.car.price);
+    let {showPayment,remainingPrice,interestRate} = this.state;
+    let quotaSinIva = (remainingPrice / showPayment);
+    let quotaPrice = ((remainingPrice+interestRate)/showPayment);
+
+    console.log("Valor agregado por financiacion: " + interestRate);
+    console.log("Cuota sin IVA " + quotaSinIva);
+    console.log("Valor de Cuota " + quotaPrice);
+  }
   
   render() {
+    let { showPercent,showPayment,selectedIndex,selectedIndexPay,remainingPrice } = this.state;
 
-    let showPercent = this.state.showPercent;
-    let showPayment = this.state.showPayment;
-    let selectedIndex = this.state.selectedIndex;
-    let selectedIndexPay =  this.state.selectedIndexPay;
     return (
       <View style={styles.container}>
         <View>
+          <Text>Precio Total: {this.props.car.price}</Text>
           <Text>{showPercent ?
             "Valor del pie:" + showPercent : "Elige porcentaje del Pie Adelanto"
           }</Text>
+          <Text>Valor Restante: {remainingPrice}</Text>
           <RkChoiceGroup radio selectedIndex={selectedIndex} onChange={(index) => this.handlePercent(index)}>
             <TouchableOpacity choiceTrigger>
               <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -100,12 +116,11 @@ export default class CarCalculator extends Component<{}> {
             </TouchableOpacity>
           </RkChoiceGroup>
         </View>
-
         <View>
           <Text>{showPayment ?
              "Numero de Cuotas:" + showPayment : "Elige numero de cuotas"
           }</Text>
-          <RkChoiceGroup radio selectedIndex={selectedIndexPay} onChange={(index1) => this.handlePayment(index1)}>
+          <RkChoiceGroup radio selectedIndex={selectedIndexPay} onChange={(index) => this.handlePayment(index)}>
             <TouchableOpacity choiceTrigger>
               <View style={{flexDirection:'row', alignItems:'center'}}>
                 <RkChoice rkType='radio'/>
@@ -126,8 +141,7 @@ export default class CarCalculator extends Component<{}> {
             </TouchableOpacity>
           </RkChoiceGroup>
         </View>
-
-        
+        <RkButton rkType='success'  onPress={() => this.calculatePlan()}>Calcular</RkButton>
       </View>
     );
   }
