@@ -42,7 +42,7 @@ class CarListComponent extends Component {
           </View>
           <Image rkCardImg source={{uri: car.images.single}}/>
           <View rkCardContent>
-            <Text>{car.brand} - {car.model} - {car.year}</Text>
+            <Text>{car.year} - {car.km} - {car.price}</Text>
           </View>
           <View rkCardFooter>
             <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>Ver</RkButton>

@@ -13,19 +13,19 @@ Navigation.startTabBasedApp({
     },
   tabs: [
     {
-      label: 'Catalogo',
+      label: 'Autos',
       screen: 'example.CarListContainer', // this is a registered name for a screen
       icon: require('./screens/catalog.png'),
       selectedIcon: require('./screens/catalog.png'), // iOS only
-      title: 'Catalogo',
+      title: 'Nuestros Autos',
 
     },
     {
-      label: 'Cotizador',
+      label: 'Cotizaciones',
       screen: 'example.Calculator',
       icon: require('./screens/calculator.png'),
       selectedIcon: require('./screens/calculator.png'), // iOS only
-      title: 'Locales'
+      title: 'Cotizaciones'
     }
   ]
 });

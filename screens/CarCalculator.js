@@ -19,7 +19,7 @@ import {RkButton,RkChoiceGroup,RkChoice,rkType} from 'react-native-ui-kitten';
 export default class CarCalculator extends Component<{}> {
   constructor(props) {
     super(props);
-    this.state = {showPercent: 1};
+    this.state = {showPercent: null};
     this.state = {showPayment: null};
     this.state = {selectedIndex: null};
     this.state = {selectedIndexPay: null};
@@ -161,7 +161,12 @@ export default class CarCalculator extends Component<{}> {
             </TouchableOpacity>
           </RkChoiceGroup>
         </View>
-        <RkButton rkType='success'  onPress={() => this.calculatePlan(this.props.navProps,car)}>Calcular</RkButton>
+        {((selectedIndex && selectedIndexPay)==null) ?
+          <Text>Completa tu Plan</Text>
+          :  
+          <RkButton rkType='success'  onPress={() => this.calculatePlan(this.props.navProps,car)}>Calcular</RkButton>
+        }
+        
       </View>
     );
   }
