@@ -28,6 +28,7 @@ export default class CarCalculator extends Component<{}> {
     this.calculatePlan = this.calculatePlan.bind(this);
   }
 
+
   handlePercent=function(index,props){
     this.state.selectedPercent=index;
     const price = parseInt(this.props.car.price);
@@ -73,20 +74,39 @@ export default class CarCalculator extends Component<{}> {
     }
   };
 
-  calculatePlan=function(){
-    const price = parseInt(this.props.car.price);
-    let {showPayment,remainingPrice,interestRate} = this.state;
-    let quotaSinIva = (remainingPrice / showPayment);
-    let quotaPrice = ((remainingPrice+interestRate)/showPayment);
-
-    console.log("Valor agregado por financiacion: " + interestRate);
+    //const price = parseInt(this.props.car.price);
+    
+    
+    calculatePlan = (navProps,car) => {
+      let {showPayment,remainingPrice,interestRate} = this.state;
+      let quotaSinIva = (remainingPrice / showPayment);
+      let quotaPrice = ((remainingPrice+interestRate)/showPayment);
+      
+      let planDetails = {
+        quotaSinIva,
+        quotaPrice,
+        interestRate,
+        showPayment,
+        remainingPrice
+      }
+      navProps.navigator.showModal({
+        screen: 'example.PlanDetails',
+        title: car.name,
+        passProps: {
+          car,
+          planDetails
+        },
+        
+      });
+    }
+    /*console.log("Valor agregado por financiacion: " + interestRate);
     console.log("Cuota sin IVA " + quotaSinIva);
-    console.log("Valor de Cuota " + quotaPrice);
-  }
+    console.log("Valor de Cuota " + quotaPrice);*/
+  
   
   render() {
     let { showPercent,showPayment,selectedIndex,selectedIndexPay,remainingPrice } = this.state;
-
+    const car = this.props.car;
     return (
       <View style={styles.container}>
         <View>
@@ -141,7 +161,7 @@ export default class CarCalculator extends Component<{}> {
             </TouchableOpacity>
           </RkChoiceGroup>
         </View>
-        <RkButton rkType='success'  onPress={() => this.calculatePlan()}>Calcular</RkButton>
+        <RkButton rkType='success'  onPress={() => this.calculatePlan(this.props.navProps,car)}>Calcular</RkButton>
       </View>
     );
   }

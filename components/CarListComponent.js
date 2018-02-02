@@ -23,7 +23,10 @@ class CarListComponent extends Component {
       props.navigator.push({
         screen: 'example.CarCalculator',
         title: car.name,
-        passProps: {car},
+        passProps: {
+            car,
+            navProps: props
+          },
         //screenBackgroundColor: '#fff',
         animationType: 'slide-horizontal'
       });
@@ -31,7 +34,6 @@ class CarListComponent extends Component {
   }
 
 	renderRow(car) {
-    
     return (
       <ScrollView style={styles.container}>
         <RkCard rkType='shadowed'>
