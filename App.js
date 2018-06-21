@@ -1,11 +1,13 @@
 import { Navigation } from 'react-native-navigation';
 import Meteor, { connectMeteor } from 'react-native-meteor';
 import { registerScreens } from './screens';
-Meteor.connect('ws://192.168.2.17:3000/websocket');
+
+
+Meteor.connect('ws://192.168.1.84:3000/websocket');
 
 registerScreens(); // this is where you register all of your app's screens
 
-const cars = Meteor.subscribe('cars');
+//const cars = Meteor.subscribe('cars');
 // start the app
 Navigation.startTabBasedApp({
   appStyle: {

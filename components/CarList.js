@@ -2,17 +2,23 @@ import React, { Component } from 'react';
 //import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView, StyleSheet,View,Text,Image} from 'react-native';
 import {RkCard,rkCardHeader,rkCardContent,rkCardImg,RkButton} from 'react-native-ui-kitten';
-import Meteor, { MeteorComplexListView } from 'react-native-meteor';
+import Meteor, { MeteorListView } from 'react-native-meteor';
 
-import CarFeaturedImageContainer from '../screens/containers/CarFeaturedImageContainer';
-import CarFeaturedImage from './CarFeaturedImage';
-
-class CarListComponent extends Component {
+class CarList extends Component {
   /*static navigationOptions = {
     title: 'Autos',
   };*/
 
+  constructor(props) {
+    super(props);
+    
+  }
+
+
  componentWillReceiveProps(props) {
+    console.log(props.image);
+   // this.setState = {imageUrl: props.image.imageUrl};
+
     viewDetails = (car) => {
       props.navigator.push({
         screen: 'example.CarDetails',
@@ -36,25 +42,28 @@ class CarListComponent extends Component {
     }
   }
 
+   getimages(){
+      //return this.props.image.imageUrl
+      return this.props.image.map((image) =>{
+        return <CarFeaturedImage key={image._id} image={image} />
+      });
+    }
 
 	renderRow(car) {
-   const imageUrl = car.image.map(function(a) {return a.imageUrl;});
-   const carImg = imageUrl[0]
-  
+
+   
     return (
       <ScrollView style={styles.container}>
         <RkCard rkType='shadowed'>
           <View rkCardHeader>
             <Text>{car.carName}</Text>
+            <Text>{this.getimages()}</Text>
+            <Image rkCardImg source={{uri: 'http://www.royalcar.cl/wp-content/uploads/2018/04/1-BMW-650i-Coupe.jpg'}}/>
+            <View rkCardContent>
+              <Text>gika</Text>
+            </View>
           </View>
-          <Image rkCardImg source={{uri: carImg}}/>
-          <View rkCardContent>
-            <Text>{car.slug}</Text>
-          </View>
-          <View rkCardFooter>
-            <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>Ver</RkButton>
-            <RkButton rkType='small success'  onPress={() => this.calculateCar(car)}>Cotizar</RkButton>
-          </View>
+          
         </RkCard>
         
 
@@ -63,7 +72,8 @@ class CarListComponent extends Component {
   }
 
   render() {
-    const { carsReady } = this.props;
+    const { carsReady, image } = this.props;
+
     if (!carsReady) {
       return (
         <View>
@@ -73,30 +83,23 @@ class CarListComponent extends Component {
     }
 
     return (
+
       <View style={styles.container}>
-
-
-        <MeteorComplexListView
-          elements={()=>{
-            return Meteor.collection('cars').find().map((car) => {
-              const image = Meteor.collection('carImages').find({carName: car.carName}, {sort: {createdAt: 1}});
-             return {
-               ...car,
-               image
-             };
-            })
-          }}
-          renderRow={this.renderRow}
+        <MeteorListView
+          collection="cars"
+          style={styles.container}
+          /*selector={{status:'iddlee'}}*/
+          options={{sort: {createdAt: -1}}}
+          renderRow={this.renderRow.bind(this)}
+          //extraProp={image.imageUrl}
         />
-
-
       </View>
     );
   }
 
 }
 
-export default CarListComponent;
+export default CarList;
 
 const styles = StyleSheet.create({
   container: {
