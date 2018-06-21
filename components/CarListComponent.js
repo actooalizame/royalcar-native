@@ -13,19 +13,24 @@ class CarListComponent extends Component {
   };*/
 
  componentWillReceiveProps(props) {
-    viewDetails = (car) => {
+    viewDetails = (car,imageUrl) => {
+     
       props.navigator.push({
         screen: 'example.CarDetails',
-        title: car.name,
-        passProps: {car},
+        title: car.carName,
+        passProps: {
+          car,
+          imageUrl
+        },
         //screenBackgroundColor: '#fff',
         animationType: 'slide-horizontal'
       });
+      console.log(imageUrl);
     }
     calculateCar = (car) => {
       props.navigator.push({
         screen: 'example.CarCalculator',
-        title: car.name,
+        title: car.carName,
         passProps: {
             car,
             navProps: props
@@ -38,9 +43,11 @@ class CarListComponent extends Component {
 
 
 	renderRow(car) {
-   const imageUrl = car.image.map(function(a) {return a.imageUrl;});
-   const carImg = imageUrl[0]
-  
+   const featured = car.featuredImg.map(function(a) {return a.imageUrl;});
+   const carImages = car.carImages.map(function(a) {return a.imageUrl;});
+   const carImg = featured[0]
+   //console.log(carImg)
+
     return (
       <ScrollView style={styles.container}>
         <RkCard rkType='shadowed'>
@@ -52,7 +59,7 @@ class CarListComponent extends Component {
             <Text>{car.slug}</Text>
           </View>
           <View rkCardFooter>
-            <RkButton rkType='small'  onPress={() => this.viewDetails(car)}>Ver</RkButton>
+            <RkButton rkType='small'  onPress={() => this.viewDetails(car,carImages)}>Ver</RkButton>
             <RkButton rkType='small success'  onPress={() => this.calculateCar(car)}>Cotizar</RkButton>
           </View>
         </RkCard>
@@ -77,12 +84,15 @@ class CarListComponent extends Component {
 
 
         <MeteorComplexListView
+          enableEmptySections
           elements={()=>{
             return Meteor.collection('cars').find().map((car) => {
-              const image = Meteor.collection('carImages').find({carName: car.carName}, {sort: {createdAt: 1}});
+              const featuredImg = Meteor.collection('carImages').find({carName: car.carName,featured:true}, {sort: {createdAt: 1}});
+              const carImages = Meteor.collection('carImages').find({carName: car.carName}, {sort: {createdAt: 1}});
              return {
                ...car,
-               image
+               featuredImg,
+               carImages
              };
             })
           }}

@@ -1,39 +1,34 @@
 import React, { Component } from 'react';
-import {StyleSheet,View,Text} from 'react-native';
+import {StyleSheet,View,Text,Dimensions} from 'react-native';
 import {RkButton,RkModalImg,RkText} from 'react-native-ui-kitten';
 
 class CarDetails extends Component {
 
-	renderFooter(car){
+	/*renderFooter(car){
 	  return (
 	    <View>
 	      <RkText rkType='success large'>{car.brand} - {car.model} - {car.year}</RkText>
 	    </View>
 	  );
-	}
+	}*/
   render() {
-  	let imageGallery = this.props.car.images.gallery;
-  	let car = this.props.car;
-  	
+  	let imageGallery = this.props.imageUrl;
+  	console.log((Dimensions.get('window').width)/3)
     return (
       <View style={styles.container}>
         
-        <Text>{this.props.car.name}</Text>
-        <Text>{this.props.car.price}</Text>
-        <Text>{this.props.car.year}</Text>
-        <Text>{this.props.car.km}</Text>
-        <Text>{this.props.car.brand}</Text>
-        <Text>{this.props.car.model}</Text>
-        <Text>{this.props.car.equipment}</Text>
-        <Text>{this.props.car.color}</Text>
-        <Text>{this.props.car.interior}</Text>
-        <Text>{this.props.car.roof}</Text>
-        <Text>{this.props.car.security}</Text>
+        <Text>{this.props.car.carName}</Text>
         <View style={styles.gallery}>
-          <RkModalImg renderFooter={() => this.renderFooter(car)} source={{uri: this.props.car.images.single}}/>
-          <RkModalImg source={{uri: imageGallery[0]}} />
-  				<RkModalImg source={{uri: imageGallery[1]}}/>
+          
+
+          <RkModalImg transparent={true} style={styles.imageThumb} modalImgStyle={styles.imageModal} source={{uri: imageGallery[0]}} />
+          <RkModalImg style={styles.imageThumb} modalImgStyle={styles.imageModal} source={{uri: imageGallery[1]}} />
+          <RkModalImg style={styles.imageThumb} modalImgStyle={styles.imageModal} source={{uri: imageGallery[2]}} />
+          
         </View>
+        <View style={styles.gallery}>
+         <RkModalImg style={styles.imageThumb} modalImgStyle={styles.imageModal} source={{uri: imageGallery[3]}} />
+        </View> 
 
       </View>
     );
@@ -49,9 +44,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   gallery: {
+    //flex: 1,
+    //width: Dimensions.get('window').width,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#CCCCCC',
     flexDirection: 'row',
+    marginBottom: 0
     //justifyContent: 'space-between'
+  },
+  imageThumb: {
+    width: (Dimensions.get('window').width)/3,
+    height: 107
+  },
+  imageModal: { 
+    height: (Dimensions.get('window').height)/2.3,
+    marginTop: (Dimensions.get('window').height)/3.7
   }
 });
